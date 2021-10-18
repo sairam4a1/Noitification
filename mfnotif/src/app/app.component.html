@@ -1,0 +1,142 @@
+	<div class="bg-1">
+		<br>
+		<div class="row container">
+			<div class="col-sm ">
+				<img src="assets/3602123.png" alt="">
+			</div>
+			<div class="col-sm">
+				<form [formGroup]="form" (ngSubmit)="onSubmit()"
+					class="form-control">
+					<div class="form-control">
+
+						<div>
+							<input class="form-check-input" type="checkbox"
+								formControlName="subscribeNotification" id="subscribe" /> <label
+								class="form-check-label" for="subscribe"> Notification
+								Subscribe </label>
+						</div>
+						<br> <label> Notification Type:</label>
+						<div class="form-check">
+							<input class="form-check-input" type="radio"
+								name="notificationType" formControlName="notificationType"
+								id="email-radio" value="email"
+								checked (click)="changenotificationType($event)"> <label
+								class="form-check-label" for="email-radio"> Email </label>
+						</div>
+						<div class="form-check">
+							<input class="form-check-input" type="radio"
+								name="notificationType" formControlName="notificationType"
+								id="message-radio" value="sms"
+								(click)="changenotificationType($event)"> <label
+								class="form-check-label" for="message-radio"> SMS </label>
+						</div>
+						<div class="form-check" hidden>
+							<input class="form-check-input" type="radio"
+								name="notificationType" formControlName="notificationType"
+								id="both-radio" value="both"
+								(click)="changenotificationType($event)"> <label
+								class="form-check-label" for="both-radio"> Both </label>
+						</div>
+
+						<div class="form-group">
+							<label> Company Name: </label> <input class="form-control"
+								formControlName="companyName" type="text"
+								placeholder="Enter Company Name">
+						</div>
+						<div class="form-group">
+							<label> Message type: </label> <select class="form-control"
+								name="dropdown" id="message_type" formControlName="messageType"
+								(change)="changeMessagetype($event)">
+								<option value="Order Placed" selected>Order Placed</option>
+								<option value="Order Packed">Order Packed</option>
+								<option value="Order Shipped">Order Shipped</option>
+								<option value="Order Delivered">Order Delivered</option>
+								<option value="Order Canceled">Order Canceled</option>
+								<option value="Order Return">Order Return</option>
+							</select>
+						</div>
+					</div>
+					<br>
+					<div
+						*ngIf="changenotificationTypeCheck=='email'||changenotificationTypeCheck=='both'"
+						class="form-control" formGroupName="emailRequest">
+
+						<div class="form-group">
+							<label> Email: </label> <input type="email"
+								formControlName="toAddress" class="form-control"
+								placeholder="email@example.com" required>
+						</div>
+
+						<div class="form-group">
+							<label> Subject: </label> <input type="text"
+								formControlName="subject" class="form-control"
+								placeholder="Please Enter Subject" required>
+						</div>
+
+						<div class="form-group">
+							<label> Body: </label>
+							<textarea formControlName="body" maxlength="256"
+								class="form-control" placeholder="Please Enter essage" required></textarea>
+						</div>
+
+					</div>
+
+					<div class="form-control" formGroupName="smsRequest"
+						*ngIf="changenotificationTypeCheck=='sms'||changenotificationTypeCheck=='both'">
+
+						<div class="form-group">
+							<label> Phone Number: </label> <input type="tel"
+								class="form-control" formControlName="phoneNumber"
+								placeholder="+919553433598" required maxlength="13">
+						</div>
+
+						<div class="form-group">
+							<label> Message: </label>
+							<textarea formControlName="message" maxlength="256"
+								class="form-control" placeholder="Please Enter message" required></textarea>
+						</div>
+
+					</div>
+
+					<div class="form-group">
+						<br>
+						<button [disabled]="this.form.invalid"
+							class="btn btn-primary form-control" type="submit">Submit</button>
+					</div>
+
+				</form>
+			</div>
+		</div>
+		<br>
+		<div class="row container">
+
+			<div
+				*ngIf="this.form.controls.companyName.touched &&this.form.controls.companyName.invalid"
+				class="alert alert-danger">
+				<span *ngIf="this.form.controls.companyName.errors.required">CompanyName
+					is required.</span> <span
+					*ngIf="this.form.controls.companyName.errors.minlength">CompanyName
+					should be 5 character.</span>
+			</div>
+			<div *ngIf="this.form.contains('emailRequest')">
+				<div class="alert alert-danger"
+					*ngIf="this.form.controls.emailRequest.controls.toAddress.touched && this.form.controls.emailRequest.controls.toAddress.invalid">
+					<span
+						*ngIf="this.form.controls.emailRequest.controls.toAddress.errors.required">Email
+						Address is required.</span> <span
+						*ngIf="this.form.controls.emailRequest.controls.toAddress.errors.email">Email
+						should be like example@gmail.com.</span>
+				</div>
+			</div>
+			<div *ngIf="this.form.contains('smsRequest')">
+				<div class="alert alert-danger"
+					*ngIf="this.form.controls.smsRequest.controls.phoneNumber.touched && this.form.controls.smsRequest.controls.phoneNumber.invalid">
+					<span
+						*ngIf="this.form.controls.smsRequest.controls.phoneNumber.errors.required">PhoneNumber
+						is required.</span> <span
+						*ngIf="this.form.controls.smsRequest.controls.phoneNumber.errors.pattern">PhoneNumber
+						should be like +919873452398.</span>
+				</div>
+			</div>
+		</div>
+	</div>
